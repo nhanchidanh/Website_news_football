@@ -1,2 +1,5 @@
 ### INIT PROJECT
-npm i
+npm install
+
+### RUN PROJECT
+npm start
