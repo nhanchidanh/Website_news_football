@@ -1,0 +1,2 @@
+### INIT PROJECT
+npm i
