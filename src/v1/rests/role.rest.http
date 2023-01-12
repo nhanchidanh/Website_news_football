@@ -1,0 +1,34 @@
+@url = http://localhost:5000/api/v1/role
+
+###Get all role
+GET {{url}}?limit=10&page=1
+
+###Get by id
+GET {{url}}/63c033eb7aaa91f642ecb683
+
+###Get all get-role-id-gte-5
+GET {{url}}/get-role-id-gte-5
+
+###create all create
+POST {{url}} 
+Content-Type: application/json 
+ 
+{
+  "name": "Quản trị viên 1",
+  "key": "ADMIN 1"
+}
+
+### update role
+PATCH  {{url}}/63bfdc02d31e27cfa2d37428
+Content-Type: application/json 
+ 
+{
+  "name": "Quản trị viên 41",
+  "key": "ADMIN 32"
+}
+
+###Delete role
+DELETE  {{url}}/63c033eb7aaa91f642ecb683
+
+###Delete force role
+DELETE  {{url}}/force/63c033eb7aaa91f642ecb683
