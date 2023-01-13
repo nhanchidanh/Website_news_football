@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 mongoose.set("strictQuery", false)
 
 //connect
-mongoose.connect('mongodb://127.0.0.1:27017')
+mongoose.connect(process.env.MONGO_URI)
   .then(_ => console.log('connect database success'))
   .catch((error) => console.log('Error connect...', error));
 

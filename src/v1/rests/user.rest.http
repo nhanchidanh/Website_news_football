@@ -1,4 +1,35 @@
-@url = http://localhost:5000/api/v1
+@url = http://localhost:5000/api/v1/user
 
 ###Get all user
-GET {{url}}/user
+GET {{url}}?limit=10&page=1
+
+###Get by id
+GET {{url}}/63c10af8074aa4dac9afec73
+
+###Create user
+POST {{url}}
+Content-Type: application/json
+
+{
+  "email": "nhanchidanh@gmail.com",
+  "password": "11111111",
+  "roleId": "63c10ae3074aa4dac9afec6e"
+}
+
+###Update user
+PATCH {{url}}/63c10af8074aa4dac9afec73
+Content-Type: application/json
+
+{
+  "email": "danh2@gmail.com",
+  "roleId": "63c10ae3074aa4dac9afec6e"
+}
+
+
+###Change password user
+PATCH {{url}}/change-password/63c10af8074aa4dac9afec73
+Content-Type: application/json
+
+{
+  "password": "22222222"
+}
