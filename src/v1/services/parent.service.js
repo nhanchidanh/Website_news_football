@@ -5,27 +5,48 @@ class ParentService {
     this.model = model;
   }
 
-  getAll = ({ limit = 5, page = 1, selectField = "", populate = {path: "", select: ""} }) => {
+  getAll = (filters = {}) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const _model = this.model;
+        const page = parseInt(filters.page) || 1;
+        const limit = parseInt(filters.limit) || 5;
+        const skip = (page - 1) * limit;
+        let options = { is_delete: false };
+        let sort = filters.sort || "_id";
+        let sortBy = {};
 
-        if (limit === 0 && page === 0) {
-          return resolve({
-            elements: await _model.find(),
-            errors: null,
-            status: 200,
-          });
+        filters.sort ? (sort = filters.sort.split(",")) : (sort = [sort]);
+
+        sort[1] ? (sortBy[sort[0]] = sort[1]) : (sortBy[sort[0]] = "asc");
+
+        if (filters.search && filters.field) {
+          options = {
+            is_delete: false,
+            [filters.field]: { $regex: filters.search, $options: "i" },
+          };
         }
 
-        if (!populate.path && !populate.select) {
-          return resolve(
-            await this.#getAllNotPopulate({ limit, page, selectField })
-          );
-        }
+        const data = await this.model
+          .find(options)
+          .select(filters.selectField)
+          .limit(limit)
+          .skip(skip)
+          .sort(sortBy);
 
-        // console.log(limit);
-        resolve(await this.#getAllPopulate({ limit, page, selectField, populate }));
+        const total = await this.model.countDocuments(options);
+
+        resolve({
+          elements: data,
+          errors: null,
+          status: 200,
+          meta: {
+            paginations: {
+              page,
+              limit,
+              totalRows: Math.ceil(total / limit),
+            },
+          },
+        });
       } catch (error) {
         reject(error);
       }
@@ -50,13 +71,13 @@ class ParentService {
           new: true,
         });
 
-        if(!response){
+        if (!response) {
           return resolve({
             errors: {
               message: "Id không tồn tại",
             },
             status: 400,
-          })
+          });
         }
 
         resolve({
@@ -130,92 +151,6 @@ class ParentService {
         });
       } catch (error) {
         next(error);
-      }
-    });
-  };
-
-  /**
-   * Lấy dữ liệu không có ref
-   * @param {limit, page, selectField} param0 
-   * @returns 
-   */
-  #getAllNotPopulate = ({ limit, page, selectField }) => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const _model = this.model;
-        const skip = (page - 1) * limit;
-
-        await _model
-          .find({ is_delete: false })
-          .select(selectField)
-          .limit(limit)
-          .skip(skip)
-          .exec((error, response) => {
-            if (error) {
-              reject(error);
-            }
-            _model.count().exec((error, count) => {
-              if (error) {
-                reject(error);
-              }
-
-              return resolve({
-                elements: response,
-                errors: null,
-                status: 200,
-                meta: {
-                  paginations: {
-                    page,
-                    limit,
-                    totalRows: Math.ceil(count / limit),
-                  },
-                },
-              });
-            });
-          });
-      } catch (error) {
-        reject(error);
-      }
-    });
-  };
-
-  #getAllPopulate = ({ limit, page, selectField, populate }) => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const _model = this.model;
-        const skip = (page - 1) * limit;
-
-        await _model
-          .find({ is_delete: false })
-          .select(selectField)
-          .populate(populate)
-          .limit(limit)
-          .skip(skip)
-          .exec((error, response) => {
-            if (error) {
-              reject(error);
-            }
-            _model.count().exec((error, count) => {
-              if (error) {
-                reject(error);
-              }
-
-              return resolve({
-                elements: response,
-                errors: null,
-                status: 200,
-                meta: {
-                  paginations: {
-                    page,
-                    limit,
-                    totalRows: Math.ceil(count / limit),
-                  },
-                },
-              });
-            });
-          });
-      } catch (error) {
-        reject(error);
       }
     });
   };

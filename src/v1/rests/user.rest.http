@@ -1,7 +1,7 @@
 @url = http://localhost:5000/api/v1/user
 
 ###Get all user
-GET {{url}}?limit=10&page=1
+GET {{url}}?sort=email
 
 ###Get by id
 GET {{url}}/63c10af8074aa4dac9afec73
@@ -11,9 +11,8 @@ POST {{url}}
 Content-Type: application/json
 
 {
-  "email": "nhanchidanh@gmail.com",
-  "password": "11111111",
-  "roleId": "63c10ae3074aa4dac9afec6e"
+  "email": "nhanchidanh2@gmail.com",
+  "password": "11111111"
 }
 
 ###Update user

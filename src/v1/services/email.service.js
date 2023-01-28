@@ -1,6 +1,6 @@
 const { validate } = require("deep-email-validator");
 const nodemailer = require("nodemailer");
-const {handleHtmlLang} = require("../utils/functions")
+const { handleHtmlLang } = require("../utils/functions");
 
 function validateEmail(email) {
   return new Promise(async (resolve, reject) => {
@@ -26,9 +26,10 @@ function validateEmail(email) {
   });
 }
 
-async function sendEmailVerifyAccount(dataSend) {
+async function sendEmailVerifyAccount(dataSend, options) {
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
+    service: "gmail",
     port: 587,
     secure: false, //true for 465, false for others port
     auth: {
@@ -41,8 +42,8 @@ async function sendEmailVerifyAccount(dataSend) {
     const response = await transporter.sendMail({
       from: `"Website tin tức thể thao" <${process.env.EMAIL_APP_USERNAME}>`,
       to: dataSend.sendToEmail,
-      subject: "Xác thực tài khoản",
-      html: handleHtmlLang(dataSend),
+      subject: options.subject,
+      html: options.handleHtmlLang,
     });
 
     if (response) {

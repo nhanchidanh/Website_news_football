@@ -12,10 +12,10 @@ class UserController extends ParentController {
     try {
       const data = req.body;
 
-      if (!data.email || !data.password || !data.roleId) {
+      if (!data.email || !data.password) {
         return next({
           status: 400,
-          message: "Thiếu trường email , password hoặc roleId",
+          message: "Thiếu trường email , password",
         });
       }
 
@@ -33,17 +33,9 @@ class UserController extends ParentController {
 
   getAll = async (req, res, next) => {
     try {
-      let { limit, page } = req.query;
-      let response;
-      if (!limit && !page) {
-        response = await this.service.getAll({ limit: 0, page: 0 });
-      } else {
-        response = await this.service.getAll({
-          limit: +limit,
-          page: +page,
-          populate: {path: "roleId", select: "key name"},
-        });
-      }
+      const selectField = "role is_verified email full_name image";
+
+      const response = await this.service.getAll({ selectField, ...req.query });
 
       res.status(response.status).json(response);
     } catch (error) {
@@ -51,31 +43,31 @@ class UserController extends ParentController {
     }
   };
 
-  changePassword = async (req, res, next) =>{
+  changePassword = async (req, res, next) => {
     try {
       const id = req.params.id;
       const password = req.body.password;
       console.log(password);
-      if(!typeOfObjectId(id + "")){
+      if (!typeOfObjectId(id + "")) {
         return next({
           status: 400,
           message: "Id không hợp lệ!",
         });
       }
 
-      if(!password){
+      if (!password) {
         return next({
           status: 400,
           message: "Thiếu trường mật khẩu!",
-        })
+        });
       }
 
-      const response = await this.service.changePassword({id, password});
+      const response = await this.service.changePassword({ id, password });
       res.status(response.status).json(response);
     } catch (error) {
-      next(error)
+      next(error);
     }
-  }
+  };
 }
 
 module.exports = new UserController();

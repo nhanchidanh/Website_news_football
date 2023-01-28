@@ -5,7 +5,7 @@ class UserService extends ParentService {
   superCreate = this.create;
   superUpdate = this.update;
   // superGetAll = this.getAll;
-  create = ({ email, roleId, password }) => {
+  create = ({ email, password }) => {
     return new Promise(async (resolve, reject) => {
       try {
         const findEmail = await this.model.findOne({ email }).exec();
@@ -19,20 +19,11 @@ class UserService extends ParentService {
           });
         }
 
-        if (!typeOfObjectId(roleId + "")) {
-          return resolve({
-            errors: {
-              message: "RoleId không hợp lệ",
-            },
-            status: 400,
-          });
-        }
-
         const hashPassword = await this.model.hashPassword(password);
 
         const response = await this.superCreate({
           email,
-          roleId,
+
           password: hashPassword,
         });
 

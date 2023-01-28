@@ -8,3 +8,35 @@ Content-Type: application/json
   "email": "nhanchidanh@gmail.com",
   "password": "cc"
 }
+
+###sign in
+POST {{url}}/sign-in
+Content-Type: application/json
+
+{
+  "email": "nhanchidanh@gmail.com",
+  "password": "11111111"
+}
+
+###Forgot passowrd
+POST {{url}}/forgot-password
+Content-Type: application/json
+
+{
+  "email": "nhanchidanh@gmail.com"
+}
+
+###Change passowrd
+POST {{url}}/forgot-password/nhanchidanh@gmail.com?token=$2b$10$/6nyewtsHdyktiCWyzDK2.wL8igbktbakWU3aRAfX6dbyXkDTm0rq
+Content-Type: application/json
+
+{
+  "password": "11111111"
+}
+
+### Get current user
+GET {{url}}/sign-in
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYzYzFhNDAwYWVkMGRiNTM4M2QwYTVhNSIsImVtYWlsIjoibmhhbmNoaWRhbmhAZ21haWwuY29tIiwiZnVsbF9uYW1lIjoiIiwicm9sZSI6IlVTRVIiLCJpbWFnZSI6IiIsImlzX3ZlcmlmaWVkIjp0cnVlfSwiaWF0IjoxNjc0OTE0NjA4LCJleHAiOjE2NzQ5MTQ2Mjh9.pg-5-2j2SkGPGdifEccyGxRcj2SQqNqIvikaJZ4BlUY
+
+### Refresh token
+GET {{url}}/refresh-token
