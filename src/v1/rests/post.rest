@@ -1,0 +1,36 @@
+@url = http://localhost:5000/api/v1/post
+
+###Create post
+POST {{url}}
+Content-Type: application/json
+
+{
+  "title": "Test title",
+  "slug": "Test-title",
+  "detail_text": "text detail",
+  "detail_html": "html detail",
+  "categoryId": "63d5ed38ae7143c78d6b21fb",
+  "userId": "63d494a28b1b80ae3b4339b7"
+}
+
+###Update post
+PATCH {{url}}/63d611e84f4a5c6081bda0d6
+Content-Type: application/json
+
+{
+  "title": "Test title 2",
+  "slug": "test-title-2"
+  
+}
+
+###Get all post
+GET {{url}}
+
+###Get by id
+GET {{url}}/63d611e84f4a5c6081bda0d6
+
+###Delete post
+DELETE  {{url}}/63d611e84f4a5c6081bda0d6
+
+###Delete force post
+DELETE  {{url}}/force/63d611e84f4a5c6081bda0d6

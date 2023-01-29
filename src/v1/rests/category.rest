@@ -1,0 +1,28 @@
+@url = http://localhost:5000/api/v1/category
+
+###Create category
+POST {{url}}
+Content-Type: application/json
+
+{
+  "name": "bat dong san",
+  "slug": "bat-dong-san",
+  "level": 2,
+  "parentId": "63d5ecf7ae7143c78d6b21f8"
+}
+
+###Update category
+PATCH {{url}}/63d5e15abe9f65fbb4c2e131
+Content-Type: application/json
+
+{
+  "name": "Công nghệ",
+  "slug": "cong-nghe",
+  "level": 4
+}
+
+###Get all category
+GET {{url}}
+
+###Get by parent id category
+GET {{url}}/parent/63d5ecf7ae7143c78d6b21f8
